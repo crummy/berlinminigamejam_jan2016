@@ -2,7 +2,8 @@ package com.malcolmcrum.berlinminijamjan2016.renderers;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.GridPoint2;
+import com.malcolmcrum.berlinminijamjan2016.Human;
 import com.malcolmcrum.berlinminijamjan2016.World;
 import com.malcolmcrum.berlinminijamjan2016.tiles.EmptyTile;
 import com.malcolmcrum.berlinminijamjan2016.tiles.Tile;
@@ -13,13 +14,15 @@ import com.malcolmcrum.berlinminijamjan2016.tiles.Tile;
 public class WorldRenderer extends Renderer {
 	private Texture ground;
 	private TileRenderer tileRenderer;
-	private Vector2 highlightedTileLocation;
+	private HumanRenderer humanRenderer;
+	private GridPoint2 highlightedTileLocation;
 	private Tile.Type selectedType;
 
 	public WorldRenderer(SpriteBatch batch) {
 		super(batch);
 		ground = new Texture("world.png");
 		tileRenderer = new TileRenderer(batch);
+		humanRenderer = new HumanRenderer(batch);
 		highlightedTileLocation = null;
 		selectedType = Tile.Type.House;
 	}
@@ -34,6 +37,9 @@ public class WorldRenderer extends Renderer {
 			if (highlightedTile instanceof EmptyTile && selectedType != null) {
 				tileRenderer.render(selectedType, highlightedTile.x, highlightedTile.y);
 			}
+		}
+		for (Human human : world.getHumans()) {
+			humanRenderer.render(human.getAction(), human.getX(), human.getY());
 		}
 	}
 

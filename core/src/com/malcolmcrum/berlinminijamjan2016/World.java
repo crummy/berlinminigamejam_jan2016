@@ -26,6 +26,11 @@ public class World {
 		placeTile(churchTile);
 
 		humans = new HashSet<>();
+		spawnNewHuman();
+	}
+
+	private void spawnNewHuman() {
+		humans.add(new Human(churchTile.x, churchTile.y));
 	}
 
 	public void pray() {
@@ -91,5 +96,9 @@ public class World {
 
 	public Tile getTile(int x, int y) {
 		return tileMap.getTile(x, y);
+	}
+
+	public Set<Human> getHumans() {
+		return humans;
 	}
 }

@@ -2,6 +2,7 @@ package com.malcolmcrum.berlinminijamjan2016.renderers;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.malcolmcrum.berlinminijamjan2016.tiles.*;
 
 /**
@@ -21,7 +22,8 @@ public class TileRenderer extends Renderer {
 
 	public void render(Tile.Type type, int x, int y) {
 		Texture texture = getTexture(type);
-		batch.draw(texture, x * texture.getWidth(), y * texture.getHeight());
+		Vector2 position = TileToPixel(x, y);
+		batch.draw(texture, position.x, position.y);
 	}
 
 	private Texture getTexture(Tile.Type type) {
