@@ -2,8 +2,8 @@ package com.malcolmcrum.berlinminijamjan2016.renderers;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
-import com.malcolmcrum.berlinminijamjan2016.tiles.*;
+import com.badlogic.gdx.math.GridPoint2;
+import com.malcolmcrum.berlinminijamjan2016.tiles.Tile;
 
 /**
  * Created by crummy on 10.01.16.
@@ -22,7 +22,7 @@ public class TileRenderer extends Renderer {
 
 	public void render(Tile.Type type, int x, int y) {
 		Texture texture = getTexture(type);
-		Vector2 position = TileToPixel(x, y);
+		GridPoint2 position = TileToPixel(x, y);
 		batch.draw(texture, position.x, position.y);
 	}
 
