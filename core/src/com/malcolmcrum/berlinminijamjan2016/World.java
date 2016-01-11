@@ -29,19 +29,19 @@ public class World {
 		spawnNewHuman();
 	}
 
-	private void spawnNewHuman() {
-		humans.add(new Human(churchTile.x, churchTile.y));
+	void spawnNewHuman() {
+		humans.add(new Human(churchTile.x, churchTile.y, this));
 	}
 
 	public void humanPrayed() {
 		prayerPoints++;
 	}
 
-	public Optional<BerriesTile> nearestFoodTile(int x, int y) {
+	public Optional<BerriesTile> nearestFoodTile(float x, float y) {
 		return Optional.ofNullable((BerriesTile)tileMap.nearestTileTo(x, y, BerriesTile.class).get());
 	}
 
-	public Optional<TreeTile> nearestWoodTile(int x, int y) {
+	public Optional<TreeTile> nearestWoodTile(float x, float y) {
 		return Optional.ofNullable((TreeTile)tileMap.nearestTileTo(x, y, BerriesTile.class).get());
 	}
 

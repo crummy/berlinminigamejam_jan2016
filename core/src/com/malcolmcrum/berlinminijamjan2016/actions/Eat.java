@@ -1,14 +1,14 @@
 package com.malcolmcrum.berlinminijamjan2016.actions;
 
 import com.malcolmcrum.berlinminijamjan2016.Human;
+import com.malcolmcrum.berlinminijamjan2016.World;
 
 /**
  * Created by crummy on 11.01.16.
  */
-public class Eating extends Action {
-	public static GoToFood goToFood = new GoToFood();
-
-	@Override public Action perform(Human human) {
+public class Eat extends Action {
+	@Override
+	public Action perform(Human human) {
 		return null;
 	}
 

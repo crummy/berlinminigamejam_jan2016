@@ -45,7 +45,7 @@ public class TileMap {
 		}
 	}
 
-	public Optional<Tile> nearestTileTo(int x, int y, Class desiredType) {
+	public Optional<Tile> nearestTileTo(float x, float y, Class desiredType) {
 		Tile nearestTile = null;
 		float nearestDistance = Float.MAX_VALUE;
 		for (Tile tile : tiles) {
