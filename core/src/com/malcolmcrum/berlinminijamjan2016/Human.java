@@ -2,9 +2,7 @@ package com.malcolmcrum.berlinminijamjan2016;
 
 import com.badlogic.gdx.math.Vector2;
 import com.malcolmcrum.berlinminijamjan2016.actions.*;
-import com.malcolmcrum.berlinminijamjan2016.tiles.HouseTile;
-import com.malcolmcrum.berlinminijamjan2016.tiles.Tile;
-import com.malcolmcrum.berlinminijamjan2016.tiles.TreeTile;
+import com.malcolmcrum.berlinminijamjan2016.tiles.*;
 
 import java.util.Optional;
 
@@ -34,6 +32,7 @@ public class Human {
 		food = new Resource();
 		wood = new Resource();
 		isAlive = true;
+		house = Optional.empty();
 	}
 
 	public void update() {
@@ -45,13 +44,13 @@ public class Human {
 		}
 		if (currentAction == null) {
 			if (foodNeed.isCritical()) {
-				currentAction = new Eat();
+				currentAction = new GoEat();
 			} else if (sleepNeed.isCritical()) {
-				currentAction = new GoToHouse();
+				currentAction = new GoToSleep();
 			} else if (foodNeed.isImportant()) {
-				currentAction = new Eat();
+				currentAction = new GoEat();
 			} else if (sleepNeed.isImportant()) {
-				currentAction = new GoToHouse();
+				currentAction = new GoToSleep();
 			} else {
 				if (Math.random() > 1 - BIRTH_CHANCE) {
 					world.spawnNewHuman();
@@ -89,6 +88,20 @@ public class Human {
 
 	public Optional<TreeTile> nearestTree() {
 		return world.nearestWoodTile(position.x, position.y);
+	}
+
+	public Optional<BerriesTile> nearestFood() {
+		return world.nearestFoodTile(position.x, position.y);
+	}
+
+	public Optional<EmptyTile> randomEmptyTile() {
+		return world.getEmptyTileForHouse();
+	}
+
+	public void buildHouse(int x, int y) {
+		HouseTile house = new HouseTile(x, y);
+		world.placeTile(house);
+		this.house = Optional.of(house);
 	}
 
 	public class Need {
@@ -129,22 +142,27 @@ public class Human {
 		}
 	}
 
-	private class Resource {
+	public class Resource {
 		int min = 0;
 		int max = 10;
 		int value = 0;
 
-		public boolean collect() {
+		public boolean isFull() {
+			return value >= max;
+		}
+
+		public boolean isEmpty() {
+			return value <= min;
+		}
+
+		public void increase() {
 			value++;
 			if (value >= max) {
 				value = max;
-				return true;
-			} else {
-				return false;
 			}
 		}
 
-		public boolean consume() {
+		public boolean decrease() {
 			value--;
 			if (value <= min) {
 				value = min;
