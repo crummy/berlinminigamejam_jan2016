@@ -33,7 +33,7 @@ public class World {
 		humans.add(new Human(churchTile.x, churchTile.y));
 	}
 
-	public void pray() {
+	public void humanPrayed() {
 		prayerPoints++;
 	}
 
@@ -91,7 +91,7 @@ public class World {
 	}
 
 	public void update() {
-
+		humans.forEach(Human::update);
 	}
 
 	public Tile getTile(int x, int y) {
