@@ -38,11 +38,11 @@ public class World {
 	}
 
 	public Optional<BerriesTile> nearestFoodTile(float x, float y) {
-		return Optional.ofNullable((BerriesTile)tileMap.nearestTileTo(x, y, BerriesTile.class).get());
+		return Optional.ofNullable((BerriesTile)tileMap.nearestTileTo(x, y, BerriesTile.class).orElse(null));
 	}
 
 	public Optional<TreeTile> nearestWoodTile(float x, float y) {
-		return Optional.ofNullable((TreeTile)tileMap.nearestTileTo(x, y, BerriesTile.class).get());
+		return Optional.ofNullable((TreeTile)tileMap.nearestTileTo(x, y, BerriesTile.class).orElse(null));
 	}
 
 	public Optional<EmptyTile> getEmptyTileForHouse() {

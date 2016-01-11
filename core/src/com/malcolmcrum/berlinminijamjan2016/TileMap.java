@@ -46,18 +46,10 @@ public class TileMap {
 	}
 
 	public Optional<Tile> nearestTileTo(float x, float y, Class desiredType) {
-		Tile nearestTile = null;
-		float nearestDistance = Float.MAX_VALUE;
-		for (Tile tile : tiles) {
-			if (tile.getClass() == desiredType) {
-				float distance = Vector2.dst(x, y, tile.x, tile.y);
-				if (distance < nearestDistance) {
-					nearestDistance = distance;
-					nearestTile = tile;
-				}
-			}
-		}
-		return Optional.ofNullable(nearestTile);
+		return Arrays.stream(tiles)
+				.filter(tile -> tile.getClass() == desiredType)
+				.sorted((a, b) -> Float.compare(Vector2.dst(a.x, a.y, x, y), Vector2.dst(b.x, b.y, x, y)))
+				.findFirst();
 	}
 
 	public Optional<Tile> getRandomTile(Class emptyTileClass) {
