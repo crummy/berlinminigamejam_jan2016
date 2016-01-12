@@ -1,5 +1,6 @@
 package com.malcolmcrum.berlinminijamjan2016;
 
+import com.badlogic.gdx.Gdx;
 import com.malcolmcrum.berlinminijamjan2016.tiles.*;
 
 import java.util.HashSet;
@@ -91,7 +92,10 @@ public class World {
 	}
 
 	public void update() {
-		humans.forEach(Human::update);
+		float elapsedTime = Gdx.graphics.getDeltaTime();
+		for(Human human : humans) {
+			human.update(elapsedTime);
+		}
 	}
 
 	public Tile getTile(int x, int y) {

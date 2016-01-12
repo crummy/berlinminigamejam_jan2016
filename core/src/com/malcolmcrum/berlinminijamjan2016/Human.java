@@ -22,6 +22,7 @@ public class Human {
 	public final Resource wood;
 	private boolean isAlive;
 	private Optional<HouseTile> house;
+	private float delta;
 
 	public Human(int x, int y, World world) {
 		this.world = world;
@@ -35,7 +36,8 @@ public class Human {
 		house = Optional.empty();
 	}
 
-	public void update() {
+	public void update(float delta) {
+		this.delta = delta;
 		foodNeed.update();
 		sleepNeed.update();
 		if (foodNeed.isMax() || sleepNeed.isMax()) {
@@ -83,7 +85,7 @@ public class Human {
 
 	public void moveTowards(Tile tile) {
 		position.add(tile.x, tile.y)
-				.setLength(0.1f);
+				.setLength(delta);
 	}
 
 	public Optional<TreeTile> nearestTree() {
@@ -112,14 +114,14 @@ public class Human {
 		private int criticalLevel = 100;
 
 		public void update() {
-			value++;
+			value += delta;
 			if (value > max) {
 				value = max;
 			}
 		}
 
 		public void fulfill() {
-			value -= 5;
+			value -= delta * 5;
 			if (value < min) {
 				value = min;
 			}
@@ -156,14 +158,14 @@ public class Human {
 		}
 
 		public void increase() {
-			value++;
+			value += delta;
 			if (value >= max) {
 				value = max;
 			}
 		}
 
 		public boolean decrease() {
-			value--;
+			value -= delta;
 			if (value <= min) {
 				value = min;
 				return true;
