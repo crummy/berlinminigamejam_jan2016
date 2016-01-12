@@ -3,9 +3,7 @@ package com.malcolmcrum.berlinminijamjan2016;
 import com.badlogic.gdx.Gdx;
 import com.malcolmcrum.berlinminijamjan2016.tiles.*;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Crummy on 1/10/2016.
@@ -17,8 +15,8 @@ public class World {
 	private ChurchTile churchTile;
 	private TileMap tileMap;
 	private int prayerPoints;
-	Set<Human> humans;
-
+	private Set<Human> humans;
+	private Set<Human> newHumans; // any new humans spawned in the update loop
 
 	public World() {
 		tileMap = new TileMap(worldWidth, worldHeight);
@@ -27,11 +25,12 @@ public class World {
 		placeTile(churchTile);
 
 		humans = new HashSet<>();
+		newHumans = new HashSet<>();
 		spawnNewHuman();
 	}
 
 	void spawnNewHuman() {
-		humans.add(new Human(churchTile.x, churchTile.y, this));
+		newHumans.add(new Human(churchTile.x, churchTile.y, this));
 	}
 
 	public void humanPrayed() {
@@ -93,9 +92,9 @@ public class World {
 
 	public void update() {
 		float elapsedTime = Gdx.graphics.getDeltaTime();
-		for(Human human : humans) {
-			human.update(elapsedTime);
-		}
+		humans.forEach((human) -> human.update(elapsedTime));
+		humans.addAll(newHumans);
+		newHumans.clear();
 	}
 
 	public Tile getTile(int x, int y) {
