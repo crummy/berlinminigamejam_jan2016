@@ -8,15 +8,14 @@ import com.malcolmcrum.berlinminijamjan2016.Button;
  * Created by crummy on 13.01.16.
  */
 public class ButtonRenderer extends Renderer {
-	public final static Texture treeTexture = new Texture("tree.png");
-	public final static Texture berriesTexture = new Texture("berries.png");
-	public final static Texture lightningTexture = new Texture("lightning.png");
+
+	public final static float width = 64;
+	public final static float height = 64;
 
 	ButtonRenderer(SpriteBatch batch) {
 		super(batch);
 	}
 
 	public void render(Button button, int x, int y, Texture texture) {
-		batch.draw(texture, x, y);
 	}
 }
