@@ -12,7 +12,7 @@ class HumanAI {
     this.food = new Resource();
     this.wood = new Resource();
     this.isAlive = true;
-    this.action = null; 
+    this.humanState = null;
   }
   
   getImage() {
@@ -35,23 +35,23 @@ class HumanAI {
       this.alive = false;
       return;
     }
-    if (this.action == null) {
+    if (this.humanState == null) {
       if (this.needsFood.isCritical()) {
-        this.action = new ActionGoToFood(this, this.world);
+        this.humanState = new ActionGoToFood(this, this.world);
       } else if (this.needsHouse.isCritical()) {
-        this.action = new ActionGoToWood(this, this.world);
+        this.humanState = new ActionGoToWood(this, this.world);
       } else if (this.needsFood.isImportant()) {
-        this.action = new ActionGoToFood(this, this.world);
+        this.humanState = new ActionGoToFood(this, this.world);
       } else if (this.needsHouse.isImportant()) {
-        this.action = new ActionGoToWood(this, this.world);
+        this.humanState = new ActionGoToWood(this, this.world);
       } else {
         if (Math.random() > 0.95) {
           this.world.trigger('spawnNewHuman');
         }
-        this.action = new ActionGoPray(this, this.world);
+        this.humanState = new ActionGoPray(this, this.world);
       }
     }
-    this.action.perform(this, this.world);
+    this.humanState.perform(this, this.world);
   }
 }
 
@@ -121,11 +121,11 @@ class ActionGoToFood extends Action {
   perform(human, world) {
     let nearestFood = world.nearestFoodTo(human);
     if (nearestFood == null) {
-      human.action = null;
+      human.humanState = null;
       return;
     }
     if (distanceBetween(human, nearestFood) < 1) {
-      human.action = new ActionCollectFood(nearestFood);
+      human.humanState = new ActionCollectFood(nearestFood);
     } else {
       human.moveTowards(nearestFood);
     }
@@ -140,7 +140,7 @@ class ActionCollectFood extends Action {
   perform(human, world) {
     if (!human.food.collect()) {
       world.trigger("add", {x: this.food.x, y: this.food.y, type: "empty"});
-      human.action = new ActionEatFood();
+      human.humanState = new ActionEatFood();
     }
   }
 }
@@ -149,7 +149,7 @@ class ActionEatFood extends Action {
   perform(human, world) {
     human.needsFood.value--;
     if (!human.food.consume()) {
-      human.action = null;
+      human.humanState = null;
     }
   }
 }
@@ -158,11 +158,11 @@ class ActionGoToWood extends Action {
   perform (human, world) {
     let nearestTree = world.nearestTreeTo(human);
     if (nearestTree == null) {
-      human.action = null;
+      human.humanState = null;
       return;
     }
     if (distanceBetween(human, nearestTree) < 1) {
-      human.action = new ActionCollectWood(nearestTree);
+      human.humanState = new ActionCollectWood(nearestTree);
     } else {
       human.moveTowards(nearestTree);
     }
@@ -177,7 +177,7 @@ class ActionCollectWood extends Action {
   perform(human, world) {
     if (!human.wood.collect()) {
       this.tree.wasCollected();
-      human.action = new ActionGoToEmptyTile(world);
+      human.humanState = new ActionGoToEmptyTile(world);
     }
   }
 }
@@ -189,7 +189,7 @@ class ActionGoToEmptyTile extends Action {
   }
   perform(human, world) {
     if (distanceBetween(human, this.desiredTile) < 1) {
-      human.action = new ActionBuildHouse(this.desiredTile);
+      human.humanState = new ActionBuildHouse(this.desiredTile);
     } else {
       human.moveTowards(this.desiredTile);
     }
@@ -203,7 +203,7 @@ class ActionBuildHouse extends Action {
   }
   perform(human, world) {
     world.buildHouse(tile);
-    human.action = null;
+    human.humanState = null;
   }
 }
 
@@ -214,7 +214,7 @@ class ActionGoPray extends Action {
     } else {
       human.moveTowards(world.getChurchTile());
     }
-    human.action = null;
+    human.humanState = null;
   }
 }
 

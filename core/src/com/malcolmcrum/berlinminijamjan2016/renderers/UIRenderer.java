@@ -40,4 +40,16 @@ public class UIRenderer extends Renderer {
 		treeButton = new Button(width/4, 0, 64, 64);
 		lightningButton = new Button(3 * width/4, 0, 64, 64);
 	}
+
+	public Rectangle getTreeRectangle() {
+		return treeButton.getRectangle();
+	}
+
+	public Rectangle getBerriesRectangle() {
+		return berriesButton.getRectangle();
+	}
+
+	public Rectangle getLightningRectangle() {
+		return lightningButton.getRectangle();
+	}
 }

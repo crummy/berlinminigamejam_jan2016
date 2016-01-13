@@ -1,13 +1,13 @@
-package com.malcolmcrum.berlinminijamjan2016.actions;
+package com.malcolmcrum.berlinminijamjan2016.humanstates;
 
 import com.malcolmcrum.berlinminijamjan2016.Human;
 
 /**
  * Created by crummy on 10.01.16.
  */
-public class Pray extends Action {
+public class Pray extends HumanState {
 	@Override
-	public Action perform(Human human) {
+	public HumanState perform(Human human) {
 		human.didPray();
 		return null;
 	}

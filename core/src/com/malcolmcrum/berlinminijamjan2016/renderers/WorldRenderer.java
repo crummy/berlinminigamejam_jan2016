@@ -54,7 +54,19 @@ public class WorldRenderer extends Renderer {
 	}
 
 	public boolean click(int x, int y) {
-		return true;
+		if (uiRenderer.getBerriesRectangle().contains(x, y)) {
+			selectedType = Tile.Type.Berries;
+			return true;
+		} else if (uiRenderer.getTreeRectangle().contains(x, y)) {
+			selectedType = Tile.Type.Tree;
+			return true;
+		} else if (uiRenderer.getLightningRectangle().contains(x, y)) {
+			// ??
+			return true;
+		}
+
+		Tile highlightedTile = world.getTile(highlightedTileLocation.x, highlightedTileLocation.y);
+
 	}
 
 	public void resize(int width, int height) {

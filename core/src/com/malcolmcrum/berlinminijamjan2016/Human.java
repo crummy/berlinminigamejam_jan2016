@@ -1,7 +1,7 @@
 package com.malcolmcrum.berlinminijamjan2016;
 
 import com.badlogic.gdx.math.Vector2;
-import com.malcolmcrum.berlinminijamjan2016.actions.*;
+import com.malcolmcrum.berlinminijamjan2016.humanstates.*;
 import com.malcolmcrum.berlinminijamjan2016.tiles.*;
 
 import java.util.Optional;
@@ -14,7 +14,7 @@ public class Human {
 	private final World world;
 	private Vector2 position;
 
-	private Action currentAction;
+	private HumanState currentHumanState;
 
 	public final Need foodNeed;
 	public final Need sleepNeed;
@@ -27,7 +27,7 @@ public class Human {
 	public Human(int x, int y, World world) {
 		this.world = world;
 		position = new Vector2(x, y);
-		currentAction = null;
+		currentHumanState = null;
 		foodNeed = new Need();
 		sleepNeed = new Need();
 		food = new Resource();
@@ -44,23 +44,23 @@ public class Human {
 			isAlive = false;
 			return;
 		}
-		if (currentAction == null) {
+		if (currentHumanState == null) {
 			if (foodNeed.isCritical()) {
-				currentAction = new GoEat();
+				currentHumanState = new GoEat();
 			} else if (sleepNeed.isCritical()) {
-				currentAction = new GoToSleep();
+				currentHumanState = new GoToSleep();
 			} else if (foodNeed.isImportant()) {
-				currentAction = new GoEat();
+				currentHumanState = new GoEat();
 			} else if (sleepNeed.isImportant()) {
-				currentAction = new GoToSleep();
+				currentHumanState = new GoToSleep();
 			} else {
 				if (Math.random() > 1 - BIRTH_CHANCE) {
 					world.spawnNewHuman();
 				}
-				currentAction = new Pray();
+				currentHumanState = new Pray();
 			}
 		}
-		currentAction = currentAction.perform(this);
+		currentHumanState = currentHumanState.perform(this);
 	}
 
 	public float getX() {
@@ -71,8 +71,8 @@ public class Human {
 		return position.y;
 	}
 
-	public Action getAction() {
-		return currentAction;
+	public HumanState getAction() {
+		return currentHumanState;
 	}
 
 	public void didPray() {

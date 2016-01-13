@@ -3,6 +3,7 @@ package com.malcolmcrum.berlinminijamjan2016.renderers;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.GridPoint2;
+import com.badlogic.gdx.math.Rectangle;
 import com.malcolmcrum.berlinminijamjan2016.tiles.Tile;
 
 /**
@@ -41,5 +42,10 @@ public class TileRenderer extends Renderer {
 			return empty;
 		}
 		throw new RenderException("Unrecognized tile: " + type);
+	}
+
+	public static Rectangle getRectangle(Tile tile) {
+		GridPoint2 center = TileToPixel(tile.x, tile.y);
+		return new Rectangle(center.x - 32, center.y - 32, 64, 64);
 	}
 }

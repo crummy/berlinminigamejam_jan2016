@@ -1,4 +1,4 @@
-package com.malcolmcrum.berlinminijamjan2016.actions;
+package com.malcolmcrum.berlinminijamjan2016.humanstates;
 
 import com.badlogic.gdx.math.Vector2;
 import com.malcolmcrum.berlinminijamjan2016.Human;
@@ -11,10 +11,10 @@ import java.util.Optional;
 /**
  * Created by crummy on 10.01.16.
  */
-public class GoToSleep extends Action {
+public class GoToSleep extends HumanState {
 
 	@Override
-	public Action perform(Human human) {
+	public HumanState perform(Human human) {
 		if (human.getHouse().isPresent()) {
 			HouseTile house = human.getHouse().get();
 			float distanceToHouse = Vector2.dst(human.getX(), human.getY(), house.x, house.y);
@@ -29,9 +29,9 @@ public class GoToSleep extends Action {
 		}
 	}
 
-	public class GoToTree extends Action {
+	public class GoToTree extends HumanState {
 		@Override
-		public Action perform(Human human) {
+		public HumanState perform(Human human) {
 			if (human.nearestTree().isPresent()) {
 				TreeTile tree = human.nearestTree().get();
 				float distanceToTree = Vector2.dst(human.getX(), human.getY(), tree.x, tree.y);
@@ -47,7 +47,7 @@ public class GoToSleep extends Action {
 		}
 	}
 
-	public class ChopWood extends Action {
+	public class ChopWood extends HumanState {
 		private final TreeTile tree;
 
 		public ChopWood(TreeTile tree) {
@@ -55,7 +55,7 @@ public class GoToSleep extends Action {
 		}
 
 		@Override
-		public Action perform(Human human) {
+		public HumanState perform(Human human) {
 			if (human.wood.isFull()) {
 				return new FindHouseTile();
 			} else if (tree.hasWood()) {
@@ -68,11 +68,11 @@ public class GoToSleep extends Action {
 		}
 	}
 
-	public class FindHouseTile extends Action {
+	public class FindHouseTile extends HumanState {
 		Optional<EmptyTile> tile = null;
 
 		@Override
-		public Action perform(Human human) {
+		public HumanState perform(Human human) {
 			tile = tile.isPresent() ? tile : human.randomEmptyTile();
 			if (tile.isPresent()) {
 				float distance = Vector2.dst(tile.get().x, tile.get().y, human.getX(), human.getY());
@@ -88,22 +88,22 @@ public class GoToSleep extends Action {
 		}
 	}
 
-	private class BuildHouse extends Action {
+	private class BuildHouse extends HumanState {
 		public EmptyTile tile;
 		public BuildHouse(EmptyTile tile) {
 			this.tile = tile;
 		}
 
 		@Override
-		public Action perform(Human human) {
+		public HumanState perform(Human human) {
 			human.buildHouse(tile.x, tile.y);
 			return new Sleep();
 		}
 	}
 
-	private class Sleep extends Action {
+	private class Sleep extends HumanState {
 		@Override
-		public Action perform(Human human) {
+		public HumanState perform(Human human) {
 			human.sleepNeed.fulfill();
 			if (human.sleepNeed.isEmpty()) {
 				return null;
