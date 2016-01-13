@@ -56,4 +56,8 @@ public class WorldRenderer extends Renderer {
 	public boolean click(int x, int y) {
 		return true;
 	}
+
+	public void resize(int width, int height) {
+		uiRenderer.resize(width, height);
+	}
 }

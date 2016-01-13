@@ -22,9 +22,7 @@ public class UIRenderer extends Renderer {
 
 		int width = Gdx.graphics.getWidth();
 		int height = Gdx.graphics.getHeight();
-		berriesButton = new Button(width/2, 0, width, height);
-		treeButton = new Button(width/4, 0, width, height);
-		lightningButton = new Button(3 * width/4, 0, width, height);
+		resize(width, height);
 	}
 
 	public void render() {
@@ -35,5 +33,11 @@ public class UIRenderer extends Renderer {
 
 	private void renderButton(Texture texture, Rectangle rect) {
 		batch.draw(texture, rect.x, rect.y, rect.width, rect.height);
+	}
+
+	public void resize(int width, int height) {
+		berriesButton = new Button(width/2, 0, 64, 64);
+		treeButton = new Button(width/4, 0, 64, 64);
+		lightningButton = new Button(3 * width/4, 0, 64, 64);
 	}
 }
